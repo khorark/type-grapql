@@ -1,13 +1,15 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
+import { logger } from './../middleware/logger';
+import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql';
 import { hash } from 'bcryptjs';
 
 import { User } from './../../entity/User';
 import { RegisterInput } from './register/RegisterInput';
+import { isAuth } from '../middleware/isAuth';
 
 @Resolver()
 export class RegisterResolver {
-	//private readonly salt = '232fdsf43g4hbllk[ck90vu';
 
+	@UseMiddleware(isAuth, logger)
 	@Query(() => String, { name: 'helloWorld', description: 'It is my first function' })
 	async hello() {
 		return 'Hello world';
